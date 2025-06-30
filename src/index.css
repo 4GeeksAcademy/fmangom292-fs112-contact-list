@@ -2,5 +2,8 @@
   width: 150px;
   height: 150px;
   border-radius: 50%;
+}
 
+.contact-action-icon{
+  text-decoration: none;
 }
