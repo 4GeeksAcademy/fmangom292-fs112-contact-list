@@ -16,15 +16,7 @@ export const Home = () => {
 				if (response.ok) {
 					return response.json();
 				} else {
-					fetch(apiUrl + "agendas/" + user, { method: "POST" })
-						.then((response) => {
-							if (response.ok) {
-								return response.json();
-								getAgenda(user);
-							} else {
-								throw new Error("Error creating agenda");
-							}
-						})
+					createAgenda(user);
 				}
 			})
 			.then((data) => {
@@ -33,6 +25,22 @@ export const Home = () => {
 			})
 	}
 
+	function createAgenda(user) {
+		fetch(apiUrl + "agendas/" + user, { method: "POST" })
+			.then((response) => {
+				if (response.ok) {
+					getAgenda(user);
+					return response.json();
+				} else {
+					throw new Error("Error creating agenda");
+				}
+			})
+	}
+
+	function updateAgenda() {
+		console.log("Updating agenda...");
+		getAgenda(user);
+	}
 
 	useEffect(() => {
 		getAgenda(user);
@@ -46,7 +54,7 @@ export const Home = () => {
 			<div className="container">
 				<div className="row">
 					{agenda && agenda.map((contact, index) => (
-						<Contact key={index} contact={contact} />
+						<Contact key={index} contact={contact} update={updateAgenda}/>
 					))}
 				</div>
 			</div>

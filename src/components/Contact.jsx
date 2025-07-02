@@ -1,29 +1,30 @@
 import avatar from "../assets/img/avatar.jpg"
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import React from "react";
 
 export const Contact = (props) => {
     const navigate = useNavigate();
     
     function handleEdit() {
-        console.log("Edit contact:", props.contact);
+
     }
 
     function handleDelete(id) {
         console.log("Delete contact:", props.contact);
-        fetch(`https://playground.4geeks.com/contact/agendas/fmangom292/contacts/${id}`, {
-            method: "DELETE"
-        })
-        .then(response => {
-            if (!response.ok) {
-                navigate("/");
-            }
-            console.log("Contact deleted:", id);
-        })
+        if(confirm("Are you sure you want to delete this contact?")){
+            fetch(`https://playground.4geeks.com/contact/agendas/fmangom292/contacts/${id}`, {
+                method: "DELETE"
+            })
+            .then(response => {
+                console.log("Contact deleted:", id);
+                props.update();
+            })
+        }
     }
 
     
-    return <div className="container border border-1 border-dark p-3">
+    return (
+    <div className="container border border-1 border-dark p-3">
         <div className="row">
             <div className="col-sm-2 col-md-2 col-xs-12">
                 <img className="avatar" src={avatar} alt="" />
@@ -36,7 +37,7 @@ export const Contact = (props) => {
             </div>
             <div className="d-flex col-sm-4 col-md-4 col-xs-12 justify-content-end ">
                 <div className="d-flex g-2">
-                    <a href="#" className="m-3 contact-action-icon" onClick={handleEdit}>🖍️</a>
+                    <NavLink to={"/create-contact"} className="m-3 contact-action-icon" state={{contact: props.contact}} >🖍️</NavLink>
                     <a
                         href="#"
                         className="m-3 contact-action-icon"
@@ -46,7 +47,7 @@ export const Contact = (props) => {
             </div>
         </div>
     </div>
-
+    )
 };
 
 export default Contact;
